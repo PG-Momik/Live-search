@@ -8,7 +8,6 @@ export default function Home() {
   const [data, setData] = useState<Person[]>([]);
   const [results, setResults] = useState<Person[]>([]);
 
-  // Load dataset once
   useEffect(() => {
     fetch("/data.json")
       .then((res) => res.json())
@@ -18,7 +17,6 @@ export default function Home() {
       });
   }, []);
 
-  // Filter search
   useEffect(() => {
     if (!query) {
       setResults(data);

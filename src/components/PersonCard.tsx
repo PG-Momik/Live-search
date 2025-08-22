@@ -1,30 +1,50 @@
+"use client";
+import { useEffect, useState } from "react";
 import { Person } from "../../types/person";
+import InfiniteScrollList from "@/components/InfiniteScrollList";
 
-export default function PersonCard({ name, language, id, bio, version }: Person) {
-    return (
-        <div className="p-5 rounded-2xl bg-white border border-gray-100 shadow-lg hover:shadow-xl transition-shadow duration-300">
-            <div className="flex justify-between items-start mb-3">
-                <h2 className="text-xl font-bold text-gray-800">{name}</h2>
-                <span className="text-xs font-medium bg-indigo-100 text-indigo-800 rounded-full px-2.5 py-1">
-                    v{version}
-                </span>
-            </div>
+export default function Home() {
+  const [query, setQuery] = useState("");
+  const [data, setData] = useState<Person[]>([]);
+  const [results, setResults] = useState<Person[]>([]);
 
-            <div className="flex gap-4 mb-3">
-                <div>
-                    <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Language</p>
-                    <p className="font-medium text-gray-700">{language}</p>
-                </div>
-                <div>
-                    <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">ID</p>
-                    <p className="font-medium text-gray-700">{id}</p>
-                </div>
-            </div>
+  useEffect(() => {
+    fetch("/data.json")
+      .then((res) => res.json())
+      .then((json: Person[]) => {
+        setData(json);
+        setResults(json);
+      });
+  }, []);
 
-            <p className="text-gray-600 leading-relaxed border-t border-gray-100 pt-3 mt-3">
-                <span className="font-semibold uppercase tracking-wide">BIO:</span>
-                <span>{bio}</span>
-            </p>
-        </div>
+  useEffect(() => {
+    if (!query) {
+      setResults(data);
+      return;
+    }
+    const lower = query.toLowerCase();
+    const filtered = data.filter(
+      (item) =>
+        item.name.toLowerCase().includes(lower) ||
+        item.language.toLowerCase().includes(lower) ||
+        item.id.toLowerCase().includes(lower) ||
+        item.bio.toLowerCase().includes(lower)
     );
+    setResults(filtered);
+  }, [query, data]);
+
+  return (
+    <main className="max-w-4xl mx-auto px-4 py-8">
+      <h1 className="text-2xl font-bold text-center mb-6">Live Search</h1>
+      <input
+        type="text"
+        placeholder="Search..."
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        className="w-full p-3 border rounded-md mb-6 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+
+      <InfiniteScrollList data={results} />
+    </main>
+  );
 }

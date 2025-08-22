@@ -10,7 +10,6 @@ type Props = {
 export default function InfiniteScrollList({ data }: Props) {
     const [visibleCount, setVisibleCount] = useState(10);
 
-    // Load more items when reaching bottom
     useEffect(() => {
         const handleScroll = () => {
             if (
