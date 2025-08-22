@@ -1,6 +1,24 @@
+# Full stack developer - Bluepen
+
+### Requirements
+
+The app should have a search bar at the top.
+
+As the user types, the app should filter and display matching results from the dataset in real-time.
+
+Keep the UI simple and clean (basic styling is enough).
+
+Use only Next.js (React + JavaScript/TypeScript) — no additional frontend libraries for search.
+
+---
+
 # Live Search with Infinite Scroll - React Project
 
-This project implements a live search feature with infinite scrolling functionality using React, TypeScript, and Tailwind CSS.
+This project implements a live search feature with infinite scrolling functionality using React, TypeScript, Tailwind CSS and Next.js.
+
+## Preview
+
+![Preview](public/preview.png)
 
 ## Features
 
